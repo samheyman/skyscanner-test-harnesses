@@ -1,0 +1,160 @@
+{% extends "base.html" %}
+
+
+{% block main %}
+    <div class="">
+      <div class="container">
+      <h3>Flights APIs</h3>
+
+        <p>Our Flights APIs connect you directly to all the data you need to build an innovative website or app.</p>
+        <p>You have two ways to search for flights</p>
+
+        <div class="row">
+          <div class="col-md-6">
+            <div class="panel panel-default" style="border: 1px solid #">
+              <div class="panel-body" onclick="$('#browse_form').removeClass('hidden');$('#pricing_form').addClass('hidden');">
+                <img id="inspire" src="/static/img/716985-magnifier-512.png" />       
+                <h4>Browse</h4>
+
+                Broad search by date or by destination (city, country or anywhere). Useful when you have flexible needs.
+              <div id="browse_form" class="hidden" style="margin: 40px 0;">
+                <form action="" method="get" class="form-horizontal">
+                    <div class="form-group">
+                      <label for="{{ form.origin_field.id_origin_field }}" class="col-sm-3 control-label">Origin:&nbsp;</label>
+                      <div class="col-sm-9">
+                      {{ form.origin_field }}
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label for="{{ form.destination_field.id_destination_field }}" class="col-sm-3 control-label">Destination:&nbsp;</label>
+                      <div class="col-sm-9">
+                      {{ form.destination_field }}
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label for="{{ form.from_date_field.id_from_date_field }}" class="col-sm-3 control-label">From:&nbsp;</label>
+                      <div class="col-sm-9">
+                      {{ form.from_date_field }}
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label for="{{ form.to_date_field.id_to_date_field }}" class="col-sm-3 control-label">To:&nbsp;</label>
+                      <div class="col-sm-9">
+                      {{ form.to_date_field }}
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      {% for service in form.service_field %}
+                      <div class="col-sm-3">
+                      {{ service }}
+                      </div>
+                      {% endfor %}
+                    </div>
+                  <input class="btn btn-primary" href="" role="button" type="submit" value="Search"></input>
+                  <span class="form-errors">{{ form.search.errors }}</span>
+                </form>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="panel panel-default">
+              <div class="panel-body" onclick="$('#pricing_form').removeClass('hidden');$('#browse_form').addClass('hidden');">
+                <img id="specific" src="http://media.istockphoto.com/vectors/target-with-dart-black-simple-icon-vector-id506925490?k=6&m=506925490&s=170667a&w=0&h=vAXYiFWdwPCrjfDjJZAJD_1MGT3FJrvP2Ifm4U9LU0w=" />
+                <h4>Specific search</h4>
+                You know your destination and your dates.
+                <br>Get latest price.
+                <div id="pricing_form" class="hidden" style="margin: 40px 0;">
+                <form action="" method="get" class="form-horizontal">
+                    <div class="form-group">
+                      <label for="{{ form.origin_field.id_origin_field }}" class="col-sm-3 control-label">Origin airport or city:&nbsp;</label>
+                      <div class="col-sm-9">
+                      {{ form.origin_field }}
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label for="{{ form.destination_field.id_destination_field }}" class="col-sm-3 control-label">Destination airport or city:&nbsp;</label>
+                      <div class="col-sm-9">
+                      {{ form.destination_field }}
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label for="{{ form.from_date_field.id_from_date_field }}" class="col-sm-3 control-label">From:&nbsp;</label>
+                      <div class="col-sm-9">
+                      {{ form.from_date_field }}
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label for="{{ form.to_date_field.id_to_date_field }}" class="col-sm-3 control-label">To:&nbsp;</label>
+                      <div class="col-sm-9">
+                      {{ form.to_date_field }}
+                      </div>
+                    </div>
+                    
+                  <input class="btn btn-primary" href="" role="button" type="submit" value="Search"></input>
+                  <span class="form-errors">{{ form.search.errors }}</span>
+                </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        
+      </div>
+    </div>
+
+
+    <!-- Results -->
+    <div class="container">
+    <div class="row">
+     <!-- Search form -->
+      <div class="col-md-8 " id="browse-test-harness">
+        
+        </div>
+    </div>
+        <br/>
+          <table class="table table-bordered table-hover table-striped" id="permissions-table">
+              <tbody>
+                  {% for quote in flights.Quotes %}
+                    {%  if quote.Direct %}
+                      <tr>
+                              
+                              <td>
+                                    {% for place in flights.Places %}
+                                      {% if place.PlaceId == quote.OutboundLeg.DestinationId %}
+                                      {{ place.Name }}
+                                      {% endif %}
+                                    {% endfor %}
+                              </td>
+                              <td >
+                                  {{ quote.OutboundLeg.DepartureDate|slice:":10" }}
+                              
+                              </td>
+                              <td >
+                                  <a href="http://whitelabeldemo.skyscanner.net/en-GB/flights#/result?originplace={{ from }}&destinationplace=AAL&outbounddate=2017-02-02&inbounddate=2017-02-12&cabinclass=Economy&adults=1&children=0&infants=0" target="_blank">£{{ quote.MinPrice }}</a>
+                              </td>
+                              <td>
+                                    {% for carrier in flights.Carriers %}
+                                      {% if carrier.CarrierId in quote.OutboundLeg.CarrierIds %}
+                                      {{ carrier.Name }}
+                                      {% endif %}
+                                    {% endfor %}
+                              </td>
+                      </tr>
+                    {% endif %}
+                  {% endfor %}
+              </tbody>
+          </table>
+
+      
+          
+    </div>
+
+
+
+{% endblock main %}
+
+
