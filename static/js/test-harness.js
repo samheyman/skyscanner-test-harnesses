@@ -63,13 +63,18 @@
                 console.log(results);
                 for (var i = 0; i < results.length; i++) {
                     var tr = $('<tr/>');
-                    var hotel_info = "<td><h5>" + results[i].name + "</h5>"
+                    var hotel_info = "<td class=\"hotel-image\">" 
+                        + "<img src=\"" +  results[i].images[0].thumbnail + "\" alt=\"hotel thumbnail\"/>"
+                        + "</td>"
+                        + "<td>"
+                        + "<h5>" + results[i].name + "</h5>"
                         + "<ul>"
                         + "<li><b>Stars: </b>" + results[i].stars + "</li>"
                         + "<li><b>Property type: </b>" + results[i].property_type + "</li>"
-                        + "</ul>";
+                        + "</ul>"
+                        + "</td>";
                     tr.append(hotel_info);
-                    tr.append("</td>")
+                    
                     th.$dataPreviewTemplate.append(tr);
                 }
                 //th.$rawDataTemplate.show();

@@ -1,6 +1,10 @@
 /* variables */
 /* overrides */
 
+.hotel-image {
+  width:210px;
+}
+
 .float-left {
     float: left;
 }
