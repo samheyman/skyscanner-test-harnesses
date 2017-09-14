@@ -2,7 +2,7 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from .forms import SearchForm
 from skyscanner.skyscanner import Flights, FlightsCache
-apikey = 'sh244837416937362282979494394467'
+apikey = 'fetch from environment'
 flights_cache_service = FlightsCache(apikey)
 flights_service = Flights(apikey)
 import json 
