@@ -149,7 +149,7 @@
                               {%  endfor %} -->
                           
                               <!-- {% for leg in flights.Legs %}
-                                {% if leg.Id = itinerary.InboundLegId %}
+                                {% if leg.Id == itinerary.InboundLegId %}
                                    {% if leg.SegmentIds|length == 1 %}
                                     <td style="background-color: #fff">Direct</td>
 

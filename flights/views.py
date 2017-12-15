@@ -1,8 +1,9 @@
+import os
 from django.http import HttpResponse
 from django.shortcuts import render
 from .forms import SearchForm
 from skyscanner.skyscanner import Flights, FlightsCache
-apikey = 'fetch from environment'
+apikey = os.environ["API_KEY"]
 flights_cache_service = FlightsCache(apikey)
 flights_service = Flights(apikey)
 import json 
@@ -136,7 +137,7 @@ def search_results(request):
 	return render(request, 'flights/results.html', {})
 
 def live_prices(request):
-	with open('/Users/samheyman/Sites/b2b_api/flights_finder/static/flights.json','r') as flights_file:    
+	with open('/Users/sheyman/Documents/Code/API_test_harnesses/static/response.json','r') as flights_file:    
     		flights = json.load(flights_file)
 	
 	#flights = pprint(flights_data)
