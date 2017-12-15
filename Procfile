@@ -1,1 +1,1 @@
-web: gunicorn test_harnesses.wsgi --log-file -
+web: gunicorn travelapis.wsgi --log-file -
