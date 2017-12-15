@@ -32,7 +32,9 @@ SECRET_KEY = 'ey7^7nb33yy4ud26cw)qwyqi0k2f2%ry1!wk1tr-v@g80dkn2g'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'floating-peak-42787.herokuapp.com',
+]
 
 
 # Application definition
