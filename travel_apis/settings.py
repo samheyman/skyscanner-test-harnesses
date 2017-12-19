@@ -33,8 +33,7 @@ SECRET_KEY = 'ey7^7nb33yy4ud26cw)qwyqi0k2f2%ry1!wk1tr-v@g80dkn2g'
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    'floating-peak-42787.herokuapp.com',
-    'travel_apis'
+    'travel-apis.herokuapp.com',
 ]
 
 
