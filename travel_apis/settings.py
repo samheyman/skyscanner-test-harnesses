@@ -34,6 +34,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = [
     'floating-peak-42787.herokuapp.com',
+    'travel_apis'
 ]
 
 
@@ -63,7 +64,7 @@ MIDDLEWARE = [
     'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
-ROOT_URLCONF = 'test_harnesses.urls'
+ROOT_URLCONF = 'travel_apis.urls'
 
 TEMPLATES = [
     {
@@ -83,7 +84,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'test_harnesses.wsgi.application'
+WSGI_APPLICATION = 'travel_apis.wsgi.application'
 
 
 # Database
