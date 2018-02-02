@@ -16,10 +16,11 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 from django.conf.urls import include
-
+from travel_apis import views
 
 urlpatterns = [
     url('admin', admin.site.urls),
+    url(r'^$', views.index, name='index'),
     url('flights', include('flights.urls'), name='flights'),
     url('hotels', include('hotels.urls'), name='hotels')
 ]
