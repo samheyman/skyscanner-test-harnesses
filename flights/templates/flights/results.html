@@ -4,7 +4,7 @@
 {% block main %}
     
     <ol class="breadcrumb" style="padding-left:60px">
-      <li><a href="./index.html">Home</a></li>
+      <li><a href="./">Home</a></li>
       <li class="active">{{ api_service }}</li>
     </ol>  
 
@@ -21,9 +21,9 @@
 <!--  -->          <a href="{{ repro_url }}" target="_blank"><pre>{{ repro_url }}</pre></a>
 
 <ul class="nav nav-tabs" role="tablist">
-  <li role="presentation" class="active">
+  <li role="presentation" >
     <a href="#quotes" aria-controls="quotes" role="tab" data-toggle="tab">Quotes</a></li>
-  <li role="presentation">
+  <li role="presentation" class="active">
     <a href="#routes" aria-controls="routes" role="tab" data-toggle="tab">Routes</a></li>
   <li role="presentation">
     <a href="#dates" aria-controls="dates" role="tab" data-toggle="tab">Dates</a></li>
@@ -34,7 +34,7 @@
 <br>
 
 <div class="tab-content">
-    <div role="tabpanel" class="tab-pane active" id="quotes">
+    <div role="tabpanel" class="tab-pane " id="quotes">
 
       <p>{{ quotes|length }} Quotes</p>
       <table class="table table-bordered table-hover table-striped" id="permissions-table">
@@ -167,8 +167,60 @@
       </table>
     </div>
 
-    <div role="tabpanel" class="tab-pane" id="routes">
-      <p>{{ routes|length }} routes</p>
+    <div role="tabpanel" class="tab-pane active" id="routes">
+      <p>{{ routes|length }} routes found</p>
+      <table class="table table-bordered table-hover table-striped" id="permissions-table">
+        <thead>
+          <tr>
+            <td></td>
+            <td>Origin</td>
+            <td>Destination</td>
+            <td>Price</td>
+            <td>QuoteIDs</td>
+          </tr>
+        </thead>
+        <tbody>
+
+            {% for route in routes %}
+                <tr>  
+                        <td>
+                            {{forloop.counter}}
+                        </td>
+
+                        {% if route.OriginId %}
+                          {% for place in response.Places %}
+                            {% if route.OriginId == place.PlaceId %}
+                              <td>{{ place.Name }} ({{ place.SkyscannerCode }})</td>
+                            {% endif %}
+                          {% endfor %}
+                        {% else %}
+                          <td>-</td>
+                        {% endif %}
+
+                        {% if route.DestinationId %}
+                          {% for place in response.Places %}
+                            {% if route.DestinationId == place.PlaceId %}
+                              <td>{{ place.Name }} ({{ place.SkyscannerCode }})</td>
+                            {% endif %}
+                          {% endfor %}
+                        {% else %}
+                          <td>-</td>
+                        {% endif %}
+                        
+                        <td>
+                            {{ route.Price }}
+                        </td>
+                        <td>
+                            {% for id in route.QuoteIds %} 
+                            <a href="#" data-toggle="popover" data-content="{{ id }}" data-original-title="Quote info">                                
+                              {{ id }}
+                            </a>                            
+                            {% endfor %}
+                            
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
     </div>
 
     <div role="tabpanel" class="tab-pane" id="dates">
@@ -364,6 +416,12 @@
 
     <div><pre>{{ flights }}</pre></div>
     
+
+    <script>
+        $(document).ready(function(){
+            $('[data-toggle="popover"]').popover(); 
+        });
+        </script>
 {% endblock main %}
 
 
