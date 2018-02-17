@@ -150,4 +150,4 @@ def travel_insights(request):
 
 
 def destinations(request):
-	return render(request, 'flights/destinations.html', {})
+	return render(request, 'flights/destinations.html', {"origin": "Madrid"})

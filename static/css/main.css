@@ -23,7 +23,7 @@ h4 {
 }
 
 h3:before {
-	background-image: url('https://clipartoons.com/wp-content/uploads/2016/01/free-aircraft-s-aircraft-animations-airplane-clipart.png');
+	background-image: url('/static/img/plane.png');
 	background-size: 30px 30px;
     display: inline-block;
     width: 30px; 
