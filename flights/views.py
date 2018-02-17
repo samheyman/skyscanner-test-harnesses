@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from .forms import SearchForm
 from skyscanner.skyscanner import Flights, FlightsCache
-apikey = os.environ["API_KEY"]
+apikey = 'sh244837416937362282979494394467'
 flights_cache_service = FlightsCache(apikey)
 flights_service = Flights(apikey)
 import json 
@@ -147,3 +147,7 @@ def travel_insights(request):
 	
 	#flights = pprint(flights_data)
 	return render(request, 'flights/travel_insights.html', {})
+
+
+def destinations(request):
+	return render(request, 'flights/destinations.html', {})

@@ -34,6 +34,15 @@ h3:before {
     margin-right: 10px;
 }
 
+a.api-link {
+  text-decoration: none;
+  color: inherit;
+}
+
+#destinations-form {
+  padding-top: 20px;
+}
+
 .logo {
 	margin-left:-15px;
 	height:50px;

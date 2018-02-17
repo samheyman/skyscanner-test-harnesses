@@ -1,19 +1,18 @@
-{% extends "base.html" %}
-
-  
+{% extends "base.html" %}  
+{% load staticfiles %}
 
 {% block main %}
 
-  <ol class="breadcrumb" style="padding-left:60px">
+  <!-- <ol class="breadcrumb" style="padding-left:60px">
     <li><a href="./">Home</a></li>
     <li class="active">Flights</li>
-  </ol>
+  </ol>-->
 
     <div class="">
       <div class="container">
       <h3>Flight APIs</h3>
 
-        <p>You have two ways to search for flights</p>
+        <h4>Skyscanner</h4>
 
         <div class="row">
           <div class="col-md-6">
@@ -108,7 +107,59 @@
           </div>
         </div>
 
-        
+        <h4>Amadeus</h4>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="panel panel-default" style="border: 1px solid #">
+              <a class="api-link" href="./flights/destinations">
+              <div class="panel-body">
+                <img id="inspire" src="/static/img/data.png" />       
+                <h4>Insights</h4>
+
+                Discover popular destinations and routes based on user searches and bookings.
+              <div id="browse_form" class="hidden" style="margin: 40px 0;">
+                <form action="" method="get" class="form-horizontal">
+                    <div class="form-group">
+                      <label for="{{ form.origin_field.id_origin_field }}" class="col-sm-3 control-label">Origin:&nbsp;</label>
+                      <div class="col-sm-9">
+                      {{ form.origin_field }}
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label for="{{ form.destination_field.id_destination_field }}" class="col-sm-3 control-label">Destination:&nbsp;</label>
+                      <div class="col-sm-9">
+                      {{ form.destination_field }}
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label for="{{ form.from_date_field.id_from_date_field }}" class="col-sm-3 control-label">From:&nbsp;</label>
+                      <div class="col-sm-9">
+                      {{ form.from_date_field }}
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label for="{{ form.to_date_field.id_to_date_field }}" class="col-sm-3 control-label">To:&nbsp;</label>
+                      <div class="col-sm-9">
+                      {{ form.to_date_field }}
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      {% for service in form.service_field %}
+                      <div class="col-sm-3">
+                      {{ service }}
+                      </div>
+                      {% endfor %}
+                    </div>
+                  <input class="btn btn-primary" href="" role="button" type="submit" value="Search"></input>
+                  <span class="form-errors">{{ form.search.errors }}</span>
+                </form>
+                </div>
+              </div>
+
+            </div>
+          </a>
+          </div>
+        </div>
       </div>
     </div>
 
