@@ -13,28 +13,38 @@
     <div class="container">
 
       <div class="row">
-        <h2>Popular destinations from {{ origin }}</h2>
+        <h2>Popular destinations from {{ origin }} and {{ most_travelled_data.1 }}</h2>
        <!-- Search form -->
         <div class="col-md-6"> 
-          <h4>Most searched (interest)</h4>
+          <h4>Searches (interest)</h4>
+          <p>Top destinations users in {{ market}} have <em>searched for</em> from {{ origin }}, based on total search numbers.</p>
           <div id="destinations_most_searched_chart"></div>
         </div>
 
         <div class="col-md-6"> 
-          <h4>Most travelled (intent)</h4>
+          <h4>Bookings (intent)</h4>
+          <p>Top destinations users have <em>travelled to</em> from {{ origin}}, based on total number of bookings and normalized to a range 0-1.</p>
           <div id="destinations_most_travelled_chart"></div>
         </div>
       </div>
       <div class="row">
         <div id="destinations-form">   
           <form>
-            <label for="origin">Choose another  origin</label>
+            <label for="origin">Choose another origin </label>
             <input id="origin" type="text" name="Select your origin">
+            <label>and date range </label>
+            <input id="origin" type="text" name="Select your origin" value="2018-01">
           </form>   
           <button onclick="load_charts()">Load</button>  
         </dir>
       </div>
+
+      <script type="text/javascript"> 
+         var most_travelled_data_xs = {{ most_travelled_data_xs|safe }};
+         var most_travelled_data_values = {{ most_travelled_data_values|safe }};
+      </script>
       <script type="text/javascript" src="{% static 'js/d3/destinations.js' %}"></script>
+
 
     </div>
 {% endblock main %}

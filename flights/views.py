@@ -150,4 +150,22 @@ def travel_insights(request):
 
 
 def destinations(request):
-	return render(request, 'flights/destinations.html', {"origin": "Madrid"})
+	destinations = {}
+	xs = ['x']
+	values = ['bookings']
+	with open('/code/static/bookings.json','r') as bookings_file:
+		bookings = json.load(bookings_file)
+	for data_entry in bookings["data"]: 
+		xs.append(data_entry["destination"])
+		values.append(data_entry["analytics"]["travellers"]["score"])
+
+	print(xs)
+	print(values)
+	return render(request, 'flights/destinations.html', {"market":"France","origin": "Madrid", "most_travelled_data_xs":json.dumps(xs), "most_travelled_data_values":json.dumps(values)})
+
+
+
+
+
+
+

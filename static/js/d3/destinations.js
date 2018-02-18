@@ -1,4 +1,7 @@
- var chart1 = c3.generate({
+// fare search history
+// actual numbers
+// type=fare-search
+var chart1 = c3.generate({
     bindto: '#destinations_most_searched_chart',
     data: {
       x: 'x',
@@ -17,13 +20,14 @@
     axis : {
         x : {
             type: 'category',
-            categories: ['PAR', 'LON', 'NYC', 'TUN', 'BCN']
-            
+            categories: ['PAR', 'LON', 'NYC', 'TUN', 'BCN'] 
         }
     }
-
 });
-          
+
+// Most travelled destinations - has to be anonymised 
+// Top destinations - flight scores
+// type = air-traffic
 var chart2 = c3.generate({
   bindto: '#destinations_most_travelled_chart',
   data: {
@@ -50,19 +54,22 @@ var chart2 = c3.generate({
 
 });
 
+
 function load_charts() { 
-chart2.load({
-  columns: [
-    ['x', 'LON', 'MAD', 'PAR', 'SIN', 'EDI'],
-    ['bookings', 12300, 11430, 8300, 5400, 2010]
-  ]
-});
-chart1.load({
-  columns: [
-    ['x', 'MAD', 'PAR', 'LON', 'SIN', 'EDI'],
-    ['searches', 13200, 11200, 7320, 4200, 3100]
-  ]
-});
+
+  chart1.load({
+    columns: [
+      ['x', 'PAR', 'LON', 'NYC', 'TUN', 'BCN'],
+      ['searches', 13200, 11200, 7320, 4200, 3100]
+    ]
+  });
+
+  chart2.load({
+    columns: [
+      most_travelled_data_xs,
+      most_travelled_data_values
+    ]
+  });
 }
 
 // setTimeout(function () {
