@@ -8,6 +8,8 @@ flights_cache_service = FlightsCache(apikey)
 flights_service = Flights(apikey)
 import json 
 from pprint import pprint
+from django.contrib.staticfiles.templatetags.staticfiles import static
+
 
 def index(request):
 	# country = flights_cache_service.get_cheapest_quotes(
@@ -150,18 +152,47 @@ def travel_insights(request):
 
 
 def destinations(request):
-	destinations = {}
-	xs = ['x']
-	values = ['bookings']
-	with open('/code/static/bookings.json','r') as bookings_file:
-		bookings = json.load(bookings_file)
-	for data_entry in bookings["data"]: 
-		xs.append(data_entry["destination"])
-		values.append(data_entry["analytics"]["travellers"]["score"])
+	origin = "New York"
+	market = "UK"
+	period = "2018-01"
 
-	print(xs)
-	print(values)
-	return render(request, 'flights/destinations.html', {"market":"France","origin": "Madrid", "most_travelled_data_xs":json.dumps(xs), "most_travelled_data_values":json.dumps(values)})
+	# Most searched data
+	# ------------------
+	searches_xs = ['x']
+	searches = ['searches']
+	with open(static('searches.json'),'r') as content:
+		searches_values = json.load(content)
+	for data_entry in searches_values["data"][0]["numberOfSearches"]["perDestination"].items(): 
+		searches_xs.append(data_entry[0])
+		searches.append(data_entry[1])
+
+	most_searched_data = {
+		"origin": origin,
+		"period": period,
+		"xs": json.dumps(searches_xs),
+		"searches": json.dumps(searches)
+	}
+
+	# Most booked data
+	# ----------------
+	booking_xs = ['x']
+	bookings = ['bookings']
+	with open(static('bookings.json'),'r') as content:
+		bookings_values = json.load(content)
+	for data_entry in bookings_values["data"]: 
+		booking_xs.append(data_entry["destination"])
+		bookings.append(data_entry["analytics"]["travellers"]["score"])
+
+	most_travelled_data = {
+		"market" : market,
+		"origin": origin,
+		"xs": json.dumps(booking_xs),
+		"bookings": json.dumps(bookings)
+	}
+
+	#Console.log(booking_xs)
+	#Console.log(bookings)
+	return render(request, 'flights/destinations.html', {"most_searched_data": most_searched_data, "most_travelled_data": most_travelled_data})
 
 
 

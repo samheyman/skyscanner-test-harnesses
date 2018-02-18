@@ -70,6 +70,10 @@ a.api-link {
 	padding: 7px 0;
 }
 
+span.destinations-results {
+  color: #999;
+}
+
 pre {
 	border: none;
 }

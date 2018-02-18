@@ -1,0 +1,33 @@
+{
+    "data": [
+    {
+        "type": "fare-search",
+        "period": "2016-05",
+        "origin": "NCE",
+        "sourceCountry": "FR",
+        "numberOfSearches": {
+                "perDestination":{
+                    "PAR": 17750,
+                    "LON": 5976,
+                    "NYC": 5620,
+                    "TUN": 4611,
+                    "BCN": 4104
+                    },
+                "perTripDuration":{
+                    "sameDay": 3285,
+                    "1": 4881,
+                    "2": 10713,
+                    "30": 877,
+                    "31+": 93591
+                },
+                "perDaysInAdvance": {
+                    "0-7": 31186,
+                    "8-14": 22774,
+                    "204-210": 891,
+                    "211+": 8114
+                }
+            }
+    }
+
+    ]
+}

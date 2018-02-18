@@ -6,8 +6,8 @@ var chart1 = c3.generate({
     data: {
       x: 'x',
       columns: [
-        ['x', 'PAR', 'LON', 'NYC', 'TUN', 'BCN'],
-        ['searches', 17750, 5976, 5620, 4611, 4104],
+        ['x', 'SIN', 'LON', 'NYC', 'TUN', 'BCN'],
+        ['searches', 12300, 11000, 5000, 2000, 500],
       ],
 
       types: {
@@ -33,7 +33,7 @@ var chart2 = c3.generate({
   data: {
     x: 'x',
     columns: [
-      ['x', 'PAR', 'LON', 'NYC', 'TUN', 'BCN'],
+      ['x', 'SIN', 'LON', 'NYC', 'TUN', 'BCN'],
       ['bookings', 17750, 5976, 5620, 4611, 4104],
     ],
 
@@ -59,8 +59,8 @@ function load_charts() {
 
   chart1.load({
     columns: [
-      ['x', 'PAR', 'LON', 'NYC', 'TUN', 'BCN'],
-      ['searches', 13200, 11200, 7320, 4200, 3100]
+      most_searched_data_xs,
+      most_searched_data_values
     ]
   });
 
