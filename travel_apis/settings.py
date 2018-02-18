@@ -19,9 +19,9 @@ PROJECT_ROOT = os.path.dirname(PROJECT_APP_PATH)
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 # locally:
-#STATIC_URL = '/code/static/'
+STATIC_URL = '/code/static/'
 # in prod:
-STATIC_URL = '/static/'
+#STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
     '/var/www/static/',
