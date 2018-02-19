@@ -161,7 +161,7 @@ def destinations(request):
 	# ------------------
 	searches_xs = ['x']
 	searches = ['searches']
-	with open('/code/static/searches.json','r') as content:
+	with open('/static/searches.json','r') as content:
 		searches_values = json.load(content)
 	for data_entry in searches_values["data"][0]["numberOfSearches"]["perDestination"].items(): 
 		searches_xs.append(data_entry[0])
@@ -178,7 +178,7 @@ def destinations(request):
 	# ----------------
 	booking_xs = ['x']
 	bookings = ['bookings']
-	with open('/code/static/bookings.json','r') as content:
+	with open('/static/bookings.json','r') as content:
 		bookings_values = json.load(content)
 	for data_entry in bookings_values["data"]: 
 		booking_xs.append(data_entry["destination"])
