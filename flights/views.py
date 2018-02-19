@@ -8,7 +8,8 @@ flights_cache_service = FlightsCache(apikey)
 flights_service = Flights(apikey)
 import json 
 from pprint import pprint
-from django.contrib.staticfiles.templatetags.staticfiles import static
+#from django.contrib.staticfiles.templatetags.staticfiles import staticfiles
+from django.contrib.staticfiles.storage import staticfiles_storage
 
 
 def index(request):
@@ -160,7 +161,7 @@ def destinations(request):
 	# ------------------
 	searches_xs = ['x']
 	searches = ['searches']
-	with open(static('searches.json'),'r') as content:
+	with open('/code/static/searches.json','r') as content:
 		searches_values = json.load(content)
 	for data_entry in searches_values["data"][0]["numberOfSearches"]["perDestination"].items(): 
 		searches_xs.append(data_entry[0])
@@ -177,7 +178,7 @@ def destinations(request):
 	# ----------------
 	booking_xs = ['x']
 	bookings = ['bookings']
-	with open(static('bookings.json'),'r') as content:
+	with open('/code/static/bookings.json','r') as content:
 		bookings_values = json.load(content)
 	for data_entry in bookings_values["data"]: 
 		booking_xs.append(data_entry["destination"])
