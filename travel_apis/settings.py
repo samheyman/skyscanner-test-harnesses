@@ -16,7 +16,7 @@ import os
 PROJECT_APP_PATH = os.path.dirname(os.path.abspath(__file__))
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-#PROJECT_ROOT = os.path.dirname(PROJECT_APP_PATH)
+PROJECT_ROOT = os.path.dirname(PROJECT_APP_PATH)
 
 STATIC_URL = '/code/static/'
 # Static files (CSS, JavaScript, Images)
