@@ -34,7 +34,7 @@ var chart2 = c3.generate({
     x: 'x',
     columns: [
       ['x', 'SIN', 'LON', 'NYC', 'TUN', 'BCN'],
-      ['bookings', 17750, 5976, 5620, 4611, 4104],
+      ['bookings', 1, 0.79, 0.34, 0.22, 0.08],
     ],
 
     types: {
