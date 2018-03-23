@@ -4,11 +4,9 @@ from django.shortcuts import render
 from .forms import SearchForm
 from .forms import AirportSearchForm
 from .forms import LocationSearchForm
-from flights.hidden import AccessCredentials
 from skyscanner.skyscanner import Flights, FlightsCache
-apikey = 'sh244837416937362282979494394467'
-flights_cache_service = FlightsCache(apikey)
-flights_service = Flights(apikey)
+flights_cache_service = FlightsCache(os.environ.get("SKYSCANNER_KEY"))
+flights_service = Flights(apios.environ.get("SKYSCANNER_KEY")key)
 import json
 from .api_url import augment
 from pprint import pprint
@@ -119,8 +117,10 @@ def index(request):
 				"repro_url": "http://partners.api.skyscanner.net/apiservices/"
 					+ api_service + "/v1.0/" + market + "/" + currency + "/" + locale
 					+ "/" + origin + "/" + destination + "/" + outbounddate + "/"
-					+ inbounddate + "?apikey=" + apikey
+					+ inbounddate + "?apikey=xxxxxxxx" + 
 			}
+
+
 
 		else:
 			context = {
