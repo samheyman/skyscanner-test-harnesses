@@ -1,6 +1,11 @@
 {% extends "base.html" %}
 
 {% block main %}
+<ol class="breadcrumb" style="padding-left:60px">
+  <li><a href="{% url 'hotels' %}">Hotels</a></li>
+  <li class="active">Hotel Search</li>
+</ol>
+
 
 <div class="container">
 
@@ -106,7 +111,7 @@
                     </select>
                 </div>
             </div>
-            
+
 
             <div class="float-left">
                     <label for="deviceType">Device type <span data-toggle="tooltip" class=" glyphicon glyphicon-question-sign" title="You need to add a request header to the call. The format is 'x-user-agent: <device>;B2B' where <device> can be D for desktop, T for tablet, M for mobile and N if you are not able to detect the device type."></span></label>
@@ -165,9 +170,9 @@
         </div>
     </div>
     </div>
-    
+
 </div>
-    
-	
+
+
 </div>
 {% endblock main %}

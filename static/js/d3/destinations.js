@@ -72,6 +72,8 @@ function load_charts() {
   });
 }
 
+
+
 // setTimeout(function () {
 //     chart.load({
 //         columns: [

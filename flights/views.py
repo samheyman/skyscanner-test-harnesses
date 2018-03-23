@@ -2,14 +2,21 @@ import os
 from django.http import HttpResponse
 from django.shortcuts import render
 from .forms import SearchForm
+from .forms import AirportSearchForm
+from .forms import LocationSearchForm
+from flights.hidden import AccessCredentials
 from skyscanner.skyscanner import Flights, FlightsCache
 apikey = 'sh244837416937362282979494394467'
 flights_cache_service = FlightsCache(apikey)
 flights_service = Flights(apikey)
-import json 
+import json
+from .api_url import augment
 from pprint import pprint
 #from django.contrib.staticfiles.templatetags.staticfiles import staticfiles
 from django.contrib.staticfiles.storage import staticfiles_storage
+import urllib.parse
+import urllib.request
+import requests
 
 
 def index(request):
@@ -25,7 +32,7 @@ def index(request):
 		market='UK'
 		currency='GBP'
 		locale='en-GB'
-		
+
 		# create a form instance and populate it with data from the request:
 		form = SearchForm(request.GET)
 		# check whether it's valid:
@@ -41,13 +48,13 @@ def index(request):
 			if api_service=='browsequotes':
 			# Make query to Flights Browse Cache API
 				response = flights_cache_service.get_cheapest_quotes(
-				    market=market,
-				    currency=currency,
-				    locale=locale,
-				    originplace= origin,
-				    destinationplace= destination,
-				    outbounddate=outbounddate,
-				    inbounddate=inbounddate).parsed
+					market=market,
+					currency=currency,
+					locale=locale,
+					originplace= origin,
+					destinationplace= destination,
+					outbounddate=outbounddate,
+					inbounddate=inbounddate).parsed
 				quotes = response['Quotes']
 				print("Date format: " + str(type(response['Quotes'][0]['OutboundLeg']['DepartureDate'])))
 				routes = []
@@ -57,13 +64,13 @@ def index(request):
 
 			elif api_service=='browseroutes':
 				response = flights_cache_service.get_cheapest_price_by_route(
-				    market=market,
-				    currency=currency,
-				    locale=locale,
-				    originplace= origin,
-				    destinationplace= destination,
-				    outbounddate=outbounddate,
-				    inbounddate=inbounddate).parsed
+					market=market,
+					currency=currency,
+					locale=locale,
+					originplace= origin,
+					destinationplace= destination,
+					outbounddate=outbounddate,
+					inbounddate=inbounddate).parsed
 				quotes = response['Quotes']
 				routes = response['Routes']
 				dates = []
@@ -72,13 +79,13 @@ def index(request):
 
 			elif api_service=='browsedates':
 				response = flights_cache_service.get_cheapest_price_by_date(
-				    market=market,
-				    currency=currency,
-				    locale=locale,
-				    originplace= origin,
-				    destinationplace= destination,
-				    outbounddate=outbounddate,
-				    inbounddate=inbounddate).parsed
+					market=market,
+					currency=currency,
+					locale=locale,
+					originplace= origin,
+					destinationplace= destination,
+					outbounddate=outbounddate,
+					inbounddate=inbounddate).parsed
 				quotes = response['Quotes']
 				dates = response['Dates']
 				outboundDates = sorted(dates["OutboundDates"], key=lambda x:x['PartialDate'])
@@ -87,18 +94,18 @@ def index(request):
 
 			elif api_service=='browsegrid':
 				response = flights_cache_service.get_grid_prices_by_date(
-				    market=market,
-				    currency=currency,
-				    locale=locale,
-				    originplace= origin,
-				    destinationplace= destination,
-				    outbounddate=outbounddate,
-				    inbounddate=inbounddate).parsed
+					market=market,
+					currency=currency,
+					locale=locale,
+					originplace= origin,
+					destinationplace= destination,
+					outbounddate=outbounddate,
+					inbounddate=inbounddate).parsed
 				dates = response['Dates']
 				routes = []
 				quotes = []
 
-			
+
 			context = {
 				"api_service": api_service,
 				"form": form,
@@ -109,9 +116,9 @@ def index(request):
 				"outboundDates": outboundDates,
 				"inboundDates": inboundDates,
 				"response": response,
-				"repro_url": "http://partners.api.skyscanner.net/apiservices/" 
-					+ api_service + "/v1.0/" + market + "/" + currency + "/" + locale 
-					+ "/" + origin + "/" + destination + "/" + outbounddate + "/" 
+				"repro_url": "http://partners.api.skyscanner.net/apiservices/"
+					+ api_service + "/v1.0/" + market + "/" + currency + "/" + locale
+					+ "/" + origin + "/" + destination + "/" + outbounddate + "/"
 					+ inbounddate + "?apikey=" + apikey
 			}
 
@@ -135,69 +142,220 @@ def index(request):
 
 	return render(request, 'flights/index.html', context)
 
-
 def search_results(request):
 	return render(request, 'flights/results.html', {})
 
 def live_prices(request):
-	with open('/Users/sheyman/Documents/Code/API_test_harnesses/static/response.json','r') as flights_file:    
-    		flights = json.load(flights_file)
-	
+	with open('/Users/sheyman/Documents/Code/API_test_harnesses/static/response.json','r') as flights_file:
+			flights = json.load(flights_file)
+
 	#flights = pprint(flights_data)
 	return render(request, 'flights/live_prices.html', {"flights":flights})
 
 def travel_insights(request):
-	
+
 	#flights = pprint(flights_data)
 	return render(request, 'flights/travel_insights.html', {})
 
-
 def destinations(request):
-	origin = "New York"
-	market = "UK"
-	period = "2018-01"
+	airport = ""
+	market = "FR"
+	period = "2016-12"
 
+	if 'airport' in request.GET:
+		form = AirportSearchForm(request.GET)
+		if form.is_valid():
+			airport = form.cleaned_data['airport']
+
+	else:
+		form = AirportSearchForm()
+		airport = "MAD"
+
+	most_searched_data = getMostSearchedData(airport, period, market)
+	most_travelled_data = getMostTraveledData(airport, period, market)
+
+	data = {
+			"form": form,
+			"airport": airport,
+			"market": market,
+			"most_searched_data": most_searched_data,
+			"most_travelled_data": most_travelled_data,
+		}
+	return render(request, 'flights/destinations.html', data)
+
+def airports(request):
+	lat,lng = (0,0)
+	airport_results = {}
+	if 'location' in request.GET:
+		form = LocationSearchForm(request.GET)
+		if form.is_valid():
+			location = form.cleaned_data['location']
+			lat,lng = getGeoCordinates(location)
+			airport_results = getAirports(lat,lng,10)
+
+	else:
+		form = LocationSearchForm()
+		location = ""
+
+	return render(request, 'flights/airports.html', {'form': form, 'lat':lat,'lng':lng, 'result': airport_results, 'location': location})
+
+def sandbox_low_fare_search(request):
+	with open('./static/sandbox-response.json','r') as response:
+		try:
+			json_data = json.load(response)
+		except:
+			json_data = None
+			print("Failed to parse the response.")
+
+	quotes = json_data["results"]
+	origin = "BOS"
+	destination = "LON"
+
+	return render(request, 'flights/sandbox-low-fare-search.html', {"quotes":quotes, "from": origin, "to":destination})
+
+
+
+def getGeoCordinates(location):
+	# initiating map in Madrid
+
+	url = 'https://maps.googleapis.com/maps/api/geocode/json'
+	params = {
+		'sensor':'true',
+		'apikey': os.environ.get("GOOGLE_MAPS_KEY"),
+		'address': location
+	}
+	query = url+"?sensor="+params['sensor']+"&address="+params['address']+"&key="+params['apikey']
+	print("Query: " + query)
+	try:
+		response = requests.get(query)
+		type = response.headers['content-type']
+		result = response.json()
+		print(result)
+		lat = result['results'][0]['geometry']['location']['lat']
+		print("Latitude: " + str(lat))
+		lng = result['results'][0]['geometry']['location']['lng']
+		print("Longitude: " + str(lng))
+	except:
+		lat,lng = (0,0)
+		result = "Error making the geolocation call: "
+		print(result)
+
+	return (lat,lng)
+
+
+def getAirports(lat,lng,limit):
+	api_endpoint = "https://test.api.amadeus.com/v1/reference-data/locations/airports?"
+	headers = {
+		'Authorization': 'Bearer ' + getOAuthToken()
+	}
+	values = {
+		"latitude": lat,
+		"longitude": lng,
+		"sort": "relevance",
+		"page[limit]": limit
+	}
+	api_endpoint = api_endpoint + urllib.parse.urlencode(values)
+	req = urllib.request.Request(api_endpoint, headers= headers)
+	response = urllib.request.urlopen(req)
+	try:
+		json_data = json.load(response)
+	except:
+		json_data = None
+		return({'error': "Failed to parse the response."})
+
+	return json_data
+
+def getOAuthToken():
+	#secrets = AccessCredentials.secrets
+	secrets = {
+        'client_id': os.environ.get("AMADEUS_CLIENT_ID"),
+        'client_secret': os.environ.get("AMADEUS_CLIENT_SECRET"),
+        'grant_type': 'client_credentials'
+    }
+	print("Client ID" + str(secrets))
+	ACCESS_TOKEN_URL = "https://test.api.amadeus.com/v1/security/oauth2/token"
+
+	authorization_response = (requests.post(
+		ACCESS_TOKEN_URL,
+		data=secrets
+	)).json()
+	return authorization_response['access_token']
+
+def getMostSearchedData(airport_code, time_period, market):
 	# Most searched data
 	# ------------------
-	searches_xs = ['x']
+	searches_xs=['x']
 	searches = ['searches']
-	with open('searches.json','r') as content:
-		searches_values = json.load(content)
-	for data_entry in searches_values["data"][0]["numberOfSearches"]["perDestination"].items(): 
+
+	api_endpoint = "https://test.api.amadeus.com/v1/travel/analytics/fare-searches?"
+	headers = {
+		'Authorization': 'Bearer ' + getOAuthToken()
+	}
+	values = {
+		"origin": airport_code,
+		"sourceCountry": market,
+		"period": time_period,
+		"maxDestinations": 5
+	}
+	api_endpoint = api_endpoint + urllib.parse.urlencode(values)
+	print("Endpoint: "+api_endpoint)
+	req = urllib.request.Request(api_endpoint, headers= headers)
+	response = urllib.request.urlopen(req)
+	try:
+		json_data = json.load(response)
+		
+	except:
+		json_data = None
+		most_searched_destinations = {'error': "Failed to get API data."}
+	
+	for data_entry in json_data["data"][0]["numberOfSearches"]["perDestination"].items():
 		searches_xs.append(data_entry[0])
 		searches.append(data_entry[1])
+	most_searched_destinations = {
+			"xs": json.dumps(searches_xs),
+			"searches": json.dumps(searches)
+		}
+	return most_searched_destinations
 
-	most_searched_data = {
-		"origin": origin,
-		"period": period,
-		"xs": json.dumps(searches_xs),
-		"searches": json.dumps(searches)
-	}
-
+def getMostTraveledData(airport_code, time_period, market):
 	# Most booked data
 	# ----------------
-	booking_xs = ['x']
-	bookings = ['bookings']
-	with open('bookings.json','r') as content:
-		bookings_values = json.load(content)
-	for data_entry in bookings_values["data"]: 
-		booking_xs.append(data_entry["destination"])
-		bookings.append(data_entry["analytics"]["travellers"]["score"])
+	travels_xs = ['x']
+	travels = ['travels']
 
-	most_travelled_data = {
-		"market" : market,
-		"origin": origin,
-		"xs": json.dumps(booking_xs),
-		"bookings": json.dumps(bookings)
+	api_endpoint = "https://test.api.amadeus.com/v1/travel/analytics/air-traffics?"
+	headers = {
+		'Authorization': 'Bearer ' + getOAuthToken()
+	}
+	values = {
+		"origin": airport_code,
+		"period": time_period,
+		"sort": "analytics.travellers.score",
+		"max": 10,
+		"page[limit]": 5,
 	}
 
-	#Console.log(booking_xs)
-	#Console.log(bookings)
-	return render(request, 'flights/destinations.html', {"most_searched_data": most_searched_data, "most_travelled_data": most_travelled_data})
+	# origin=MAD&period=2015-09&sort=analytics.travellers.score&max=10&page[limit]=5
+	api_endpoint = api_endpoint + urllib.parse.urlencode(values)
+	print("Endpoint: " + api_endpoint)
+	req = urllib.request.Request(api_endpoint, headers= headers)
+	response = urllib.request.urlopen(req)
+	try:
+		json_data = json.load(response)
+		
+	except:
+		json_data = None
+		most_searched_destinations = {'error': "Failed to get API data."}
 
+	# with open('bookings.json','r') as content:
+	# 	bookings_values = json.load(content)
+	if len(json_data['data']) > 0:
+		for data_entry in json_data["data"]:
+			travels_xs.append(data_entry["destination"])
+			travels.append(data_entry["analytics"]["travellers"]["score"])
 
-
-
-
-
-
+	most_travelled_data = {
+		"xs": json.dumps(travels_xs),
+		"travels": json.dumps(travels)
+	}
+	return most_travelled_data

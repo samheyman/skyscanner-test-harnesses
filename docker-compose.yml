@@ -12,3 +12,7 @@ services:
          - "8000:8000"
       depends_on:
          - db
+      environment:
+         - AMADEUS_CLIENT_ID=$AMADEUS_CLIENT_ID
+         - AMADEUS_CLIENT_SECRET=$AMADEUS_CLIENT_SECRET
+         - GOOGLE_MAPS_KEY=$GOOGLE_MAPS_KEY
