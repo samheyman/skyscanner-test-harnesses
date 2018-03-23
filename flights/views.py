@@ -5,8 +5,6 @@ from .forms import SearchForm
 from .forms import AirportSearchForm
 from .forms import LocationSearchForm
 from skyscanner.skyscanner import Flights, FlightsCache
-flights_cache_service = FlightsCache(os.environ.get("SKYSCANNER_KEY"))
-flights_service = Flights(apios.environ.get("SKYSCANNER_KEY"))
 import json
 from .api_url import augment
 from pprint import pprint
@@ -16,6 +14,10 @@ import urllib.parse
 import urllib.request
 import requests
 
+skyscanner_key = os.environ.get("SKYSCANNER_KEY")
+print("Skyscanner key: " + skyscanner_key)
+#flights_cache_service = FlightsCache(skyscanner_key)
+#flights_service = Flights(skyscanner_key)
 
 def index(request):
 	# country = flights_cache_service.get_cheapest_quotes(
@@ -117,7 +119,7 @@ def index(request):
 				"repro_url": "http://partners.api.skyscanner.net/apiservices/"
 					+ api_service + "/v1.0/" + market + "/" + currency + "/" + locale
 					+ "/" + origin + "/" + destination + "/" + outbounddate + "/"
-					+ inbounddate + "?apikey=xxxxxxxx" + 
+					+ inbounddate + "?apikey=xxxxxxxx"
 			}
 
 
