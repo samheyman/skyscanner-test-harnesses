@@ -4,3 +4,4 @@ pprint
 psycopg2
 requests
 skyscanner
+whitenoise
