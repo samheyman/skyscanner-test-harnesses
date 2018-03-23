@@ -6,7 +6,7 @@ from .forms import AirportSearchForm
 from .forms import LocationSearchForm
 from skyscanner.skyscanner import Flights, FlightsCache
 flights_cache_service = FlightsCache(os.environ.get("SKYSCANNER_KEY"))
-flights_service = Flights(apios.environ.get("SKYSCANNER_KEY")key)
+flights_service = Flights(apios.environ.get("SKYSCANNER_KEY"))
 import json
 from .api_url import augment
 from pprint import pprint
