@@ -6,7 +6,6 @@ from .forms import AirportSearchForm
 from .forms import LocationSearchForm
 from skyscanner.skyscanner import Flights, FlightsCache
 import json
-from .api_url import augment
 from pprint import pprint
 #from django.contrib.staticfiles.templatetags.staticfiles import staticfiles
 from django.contrib.staticfiles.storage import staticfiles_storage
