@@ -200,6 +200,21 @@ def airports(request):
 
 	return render(request, 'flights/airports.html', {'form': form, 'lat':lat,'lng':lng, 'result': airport_results, 'location': location})
 
+def points_of_interest(request):
+	location = ""
+	points_of_interest = {}
+	if 'location' in request.GET:
+		form = LocationSearchForm(request.GET)
+		if form.is_valid():
+			location = form.cleaned_data['location']
+			points_of_interest = getPointsOfInterest(location)
+
+	else:
+		form = LocationSearchForm()
+		location = ""
+
+	return render(request, 'flights/points-of-interest.html', {'form': form, 'result': points_of_interest, 'location': location})
+
 def sandbox_low_fare_search(request):
 	origin = "JFK"
 	destination = "MAD"
@@ -242,6 +257,23 @@ def getLowFareFlights(origin, destination, departure_date, return_date):
 		"apikey": os.environ.get("AMADEUS_SANDBOX_KEY"),
 		"departure_date": departure_date,
 		"return_date": return_date
+	}
+	api_endpoint = api_endpoint + urllib.parse.urlencode(values)
+	req = urllib.request.Request(api_endpoint)
+	response = urllib.request.urlopen(req)
+	try:
+		json_data = json.load(response)
+	except:
+		json_data = None
+		return({'error': "Failed to parse the response."})
+
+	return json_data
+
+def getPointsOfInterest(location):
+	api_endpoint = "https://api.sandbox.amadeus.com/v1.2/points-of-interest/yapq-search-text?"
+	values = {
+		"city_name": location,
+		"apikey": os.environ.get("AMADEUS_SANDBOX_KEY")
 	}
 	api_endpoint = api_endpoint + urllib.parse.urlencode(values)
 	req = urllib.request.Request(api_endpoint)
