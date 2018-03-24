@@ -201,20 +201,11 @@ def airports(request):
 	return render(request, 'flights/airports.html', {'form': form, 'lat':lat,'lng':lng, 'result': airport_results, 'location': location})
 
 def sandbox_low_fare_search(request):
-	with open('./static/sandbox-response.json','r') as response:
-		try:
-			json_data = json.load(response)
-		except:
-			json_data = None
-			print("Failed to parse the response.")
-
+	origin = "JFK"
+	destination = "MAD"
+	json_data = getLowFareFlights(origin, destination,'2018-08-01','2018-08-10')
 	quotes = json_data["results"]
-	origin = "BOS"
-	destination = "LON"
-
 	return render(request, 'flights/sandbox-low-fare-search.html', {"quotes":quotes, "from": origin, "to":destination})
-
-
 
 def getGeoCordinates(location):
 	# initiating map in Madrid
@@ -243,6 +234,25 @@ def getGeoCordinates(location):
 
 	return (lat,lng)
 
+def getLowFareFlights(origin, destination, departure_date, return_date):
+	api_endpoint = "https://api.sandbox.amadeus.com/v1.2/flights/low-fare-search?"
+	values = {
+		"origin": origin,
+		"destination": destination,
+		"apikey": os.environ.get("AMADEUS_SANDBOX_KEY"),
+		"departure_date": departure_date,
+		"return_date": return_date
+	}
+	api_endpoint = api_endpoint + urllib.parse.urlencode(values)
+	req = urllib.request.Request(api_endpoint)
+	response = urllib.request.urlopen(req)
+	try:
+		json_data = json.load(response)
+	except:
+		json_data = None
+		return({'error': "Failed to parse the response."})
+
+	return json_data
 
 def getAirports(lat,lng,limit):
 	api_endpoint = "https://test.api.amadeus.com/v1/reference-data/locations/airports?"
