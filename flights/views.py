@@ -14,7 +14,6 @@ import urllib.request
 import requests
 
 skyscanner_key = os.environ.get("SKYSCANNER_KEY")
-print("Skyscanner key: " + skyscanner_key)
 #flights_cache_service = FlightsCache(skyscanner_key)
 #flights_service = Flights(skyscanner_key)
 

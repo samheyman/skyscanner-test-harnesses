@@ -108,7 +108,7 @@
 
           <div class="col-md-6">
             <div class="panel panel-default" style="border: 1px solid #">
-              <a class="api-link" href="./flights/travel_insights">
+              <a class="api-link" href="{% url 'travel_insights' %}">
               <div class="panel-body">
                 <img id="inspire" src="{% static 'img/map.gif' %}" />       
                 <h4>Map animation</h4>
@@ -125,7 +125,7 @@
         <div class="row">
           <div class="col-md-6">
             <div class="panel panel-default" style="border: 1px solid #">
-              <a class="api-link" href="./flights/airports">
+              <a class="api-link" href="{% url 'airports' %}">
               <div class="panel-body">
                 <img id="inspire" src="{% static 'img/transit.png' %}" />       
                 <h4>Find airports</h4>
@@ -138,7 +138,7 @@
           </div>
           <div class="col-md-6">
             <div class="panel panel-default" style="border: 1px solid #">
-              <a class="api-link" href="./flights/destinations">
+              <a class="api-link" href="{% url 'destinations' %}">
               <div class="panel-body">
                 <img id="inspire" src="{% static 'img/data.png' %}" />       
                 <h4>Routes &amp; destinations</h4>
@@ -153,7 +153,7 @@
         <div class="row"> 
           <div class="col-md-6">
             <div class="panel panel-default" style="border: 1px solid #">
-              <a class="api-link" href="./flights/sandbox_low_fare_search">
+              <a class="api-link" href="{% url 'low_fare_search' %}">
               <div class="panel-body">
                 <img id="inspire" src="{% static 'img/direct.png' %}" />       
                 <h4>Innovation Sandbox: low-fare-search</h4>
@@ -166,7 +166,7 @@
           </div>
           <div class="col-md-6">
               <div class="panel panel-default" style="border: 1px solid #">
-                <a class="api-link" href="./flights/points_of_interest">
+                <a class="api-link" href="{% url 'points_of_interest' %}">
                 <div class="panel-body">
                   <img id="inspire" src="{% static 'img/poi.png' %}" />       
                   <h4>Points of Interest</h4>
