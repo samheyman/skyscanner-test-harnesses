@@ -23,10 +23,8 @@ STATIC_URL = '/static/'
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 # locally:
 # in prod:
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "static"),
-]
-# STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+STATIC_ROOT = 'static'
 
 
 # Quick-start development settings - unsuitable for production
