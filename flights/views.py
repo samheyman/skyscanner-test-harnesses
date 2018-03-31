@@ -206,7 +206,7 @@ def points_of_interest(request):
 		form = LocationSearchForm(request.GET)
 		if form.is_valid():
 			location = form.cleaned_data['location']
-			points_of_interest = getPointsOfInterest(location)
+			points_of_interest = getPointsOfInterest(location,'yapq')
 
 	else:
 		form = LocationSearchForm()
@@ -268,22 +268,27 @@ def getLowFareFlights(origin, destination, departure_date, return_date):
 
 	return json_data
 
-def getPointsOfInterest(location):
-	api_endpoint = "https://api.sandbox.amadeus.com/v1.2/points-of-interest/yapq-search-text?"
-	values = {
-		"city_name": location,
-		"apikey": os.environ.get("AMADEUS_SANDBOX_KEY")
-	}
-	api_endpoint = api_endpoint + urllib.parse.urlencode(values)
-	req = urllib.request.Request(api_endpoint)
-	response = urllib.request.urlopen(req)
-	try:
-		json_data = json.load(response)
-	except:
+def getPointsOfInterest(location, provider):
+	if provider is 'yapq':
+		api_endpoint = "https://api.sandbox.amadeus.com/v1.2/points-of-interest/yapq-search-text?"
+		values = {
+			"city_name": location,
+			"apikey": os.environ.get("AMADEUS_SANDBOX_KEY")
+		}
+		api_endpoint = api_endpoint + urllib.parse.urlencode(values)
+		req = urllib.request.Request(api_endpoint)
+		response = urllib.request.urlopen(req)
+		try:
+			json_data = json.load(response)
+		except:
+			json_data = None
+			
+	elif provider is 'avuxi':
+		json_data = json.loads('{}')
+	else:
 		json_data = None
-		return({'error': "Failed to parse the response."})
-
 	return json_data
+
 
 def getAirports(lat,lng,limit):
 	api_endpoint = "https://test.api.amadeus.com/v1/reference-data/locations/airports?"
@@ -308,13 +313,11 @@ def getAirports(lat,lng,limit):
 	return json_data
 
 def getOAuthToken():
-	#secrets = AccessCredentials.secrets
 	secrets = {
         'client_id': os.environ.get("AMADEUS_CLIENT_ID"),
         'client_secret': os.environ.get("AMADEUS_CLIENT_SECRET"),
         'grant_type': 'client_credentials'
     }
-	print("Client ID" + str(secrets))
 	ACCESS_TOKEN_URL = "https://test.api.amadeus.com/v1/security/oauth2/token"
 
 	authorization_response = (requests.post(

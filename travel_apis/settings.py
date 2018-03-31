@@ -36,7 +36,7 @@ STATICFILES_DIRS = [
 SECRET_KEY = 'ey7^7nb33yy4ud26cw)qwyqi0k2f2%ry1!wk1tr-v@g80dkn2g'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = [
     'travel-apis.herokuapp.com',
@@ -57,7 +57,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'home',
     'flights',
-    'hotels'
+    'hotels',
+    'destinations'
 ]
 
 MIDDLEWARE = [

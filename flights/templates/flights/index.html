@@ -3,12 +3,11 @@
 
 {% block main %}
 
-  <!-- <ol class="breadcrumb" style="padding-left:60px">
-    <li><a href="./">Home</a></li>
+  <ol class="breadcrumb" style="padding-left:60px">
+    <li><a href="{% url 'home' %}">Home</a></li>
     <li class="active">Flights</li>
-  </ol>-->
+  </ol>
 
-    <div class="">
       <div class="container">
       <h3>Flight APIs</h3>
 
@@ -111,7 +110,7 @@
               <a class="api-link" href="{% url 'travel_insights' %}">
               <div class="panel-body">
                 <img id="inspire" src="{% static 'img/map.gif' %}" />       
-                <h4>Map animation</h4>
+                <h4>Route animation</h4>
 
                   Visualise routes on a map.
               
@@ -164,19 +163,6 @@
               </a>
             </div>
           </div>
-          <div class="col-md-6">
-              <div class="panel panel-default" style="border: 1px solid #">
-                <a class="api-link" href="{% url 'points_of_interest' %}">
-                <div class="panel-body">
-                  <img id="inspire" src="{% static 'img/poi.png' %}" />       
-                  <h4>Points of Interest</h4>
-  
-                  Find interesting things to do in a given location.
-                
-                  </div>
-                </a>
-              </div>
-            </div>
         </div>
 
 

@@ -10,5 +10,4 @@ urlpatterns = [
     url('destinations', views.destinations, name='destinations'),
     url('airports', views.airports, name='airports'),
     url('low_fare_search', views.sandbox_low_fare_search, name='low_fare_search'),
-    url('points_of_interest', views.points_of_interest, name='points_of_interest')
 ]
