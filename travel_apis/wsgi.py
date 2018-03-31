@@ -12,5 +12,6 @@ import os
 from django.core.wsgi import get_wsgi_application
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "travel_apis.settings")
+os.environ['SETTINGS_CONFIG'] = 'travel_apis.settings'
 
 application = get_wsgi_application()
